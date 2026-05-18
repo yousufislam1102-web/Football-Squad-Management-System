@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --pitch-green: #00ff85;
+    --neon-glow: rgba(0, 255, 133, 0.4);
+    --bg-dark: #0f111a;
+    
+    /* --- FIXED: Sidebar transparency --- */
+    --sidebar-bg: rgba(10, 12, 22, 0.65);
+    
+    /* --- FIXED: Replaced solid dark gray with semi-transparent stadium blue glass --- */
+    --card-bg: rgba(16, 22, 39, 0.75);
+    
+    --text-main: #ffffff;
+    --text-muted: #94a3b8;
+    --danger: #ff4757;
+    --glass-border: rgba(255, 255, 255, 0.06);
+    
+    /* Position Badge Colors */
+    --pos-gk: #ffbc00;
+    --pos-def: #3498db;
+    --pos-mid: #9b59b6;
+    --pos-fwd: #e74c3c;
+}
+
+* {
+    box-sizing: border-box;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    /* --- FIXED: Moves wallpaper logic here globally --- */
+    background: linear-gradient(rgba(10, 12, 22, 0.5), rgba(10, 12, 22, 0.75)), 
+                url('https://4kwallpapers.com/images/wallpapers/fc-barcelona-camp-3840x2160-19432.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* TACTICAL PITCH BACKGROUND OVERLAY */
+.main-content {
+    margin-left: 260px;
+    padding: 40px;
+    width: 100%;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* --- FIXED: Removed solid dark overlays blocking image layout --- */
+.main-content::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(0, 255, 133, 0.01) 80px, rgba(0, 255, 133, 0.01) 160px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* SIDEBAR PANEL */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    position: fixed;
+    border-right: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.sidebar h2 {
+    padding: 40px 25px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--pitch-green);
+    text-shadow: 0 0 15px var(--neon-glow);
+    margin: 0;
+}
+
+.sidebar a {
+    padding: 16px 25px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar a:hover {
+    color: var(--pitch-green);
+    background: rgba(0, 255, 133, 0.05);
+    padding-left: 35px;
+}
+
+/* Pulse Animation for "Sign Player" action in Sidebar */
+.sidebar a[href="add_player.php"] span {
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { filter: drop-shadow(0 0 0px var(--pitch-green)); }
+    50% { filter: drop-shadow(0 0 5px var(--pitch-green)); transform: scale(1.1); }
+    100% { filter: drop-shadow(0 0 0px var(--pitch-green)); }
+}
+
+/* --- COMPONENT: UPDATED SEARCH & FILTER BAR --- */
+.filter-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.filter-container input[type="text"] {
+    flex: 2; 
+    padding: 18px 24px;
+    background: rgba(8, 10, 18, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.filter-container select {
+    flex: 1; 
+    padding: 18px 48px 18px 24px;
+    background: rgba(8, 10, 18, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300ff85' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+}
+
+/* Form Dropdown Options - Dark Fix */
+.filter-container select option {
+    background-color: #101627 !important;
+    color: white !important;
+}
+
+.filter-container input[type="text"]:focus,
+.filter-container select:focus {
+    border-color: var(--pitch-green);
+    box-shadow: 0 0 15px var(--neon-glow);
+    background: rgba(20, 24, 39, 0.85);
+}
+
+/* Filter Application Button */
+.btn-apply {
+    background: var(--pitch-green);
+    color: #000000;
+    padding: 18px 36px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--neon-glow);
+}
+
+.btn-apply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 133, 0.6);
+    background: #ffffff;
+}
+
+/* --- CONTAINER CARDS --- */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card {
+    border-top: 3px solid var(--pitch-green);
+}
+
+.stat-card h2 {
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+/* --- PREMIUM LIST TABLES --- */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+thead th {
+    padding: 10px 20px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* --- FIXED: Removed pitch black table cells, changed to transparent glass rows --- */
+tr td {
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 20px;
+}
+
+tr td:first-child { 
+    border-radius: 12px 0 0 12px; 
+    border-left: 1px solid rgba(255, 255, 255, 0.03);
+}
+tr td:last-child { 
+    border-radius: 0 12px 12px 0; 
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+tr:hover td strong {
+    color: var(--pitch-green);
+    text-shadow: 0 0 10px var(--neon-glow);
+}
+
+/* --- SYSTEM ACTION BUTTONS --- */
+.btn-primary {
+    background: var(--pitch-green);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.btn-primary:hover { background: #fff; transform: translateY(-2px); }
+
+.btn-delete {
+    color: var(--danger);
+    text-decoration: none;
+    border: 1px solid var(--danger);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.btn-delete:hover { background: var(--danger); color: #fff; }
+
+/* --- DYNAMIC POSITION COLORED BADGES --- */
+.badge {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+.pos-goa { color: var(--pos-gk); }
+.pos-def { color: var(--pos-def); }
+.pos-mid { color: var(--pos-mid); }
+.pos-for { color: var(--pos-fwd); }
+
+/* --- ATTRIBUTE RATING PROGRESS BARS --- */
+.progress-container {
+    width: 120px;
+    height: 6px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff85, #27ae60);
+}
+
+/* --- FORMS & DIALOG INPUTS (Sign/Login pages) --- */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--pitch-green);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+input[type="number"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 18px;
+    background: rgba(8, 10, 18, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+}
+input[type="number"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    border-color: var(--pitch-green);
+    box-shadow: 0 0 15px var(--neon-glow);
+}
